@@ -36,10 +36,19 @@ public class UserService {
     public User updateUser(Long id, User updatedUser){
 
         // We will have the same user ID to save resources, but we will save the new data.
-        User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id"));
-        existingUser.setName(updatedUser.getName());
-        existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setPassword(updatedUser.getPassword());
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id:" + id));
+
+        // Update the specified fields.
+        if (updatedUser.getName() != null){
+            existingUser.setName(updatedUser.getName());
+        }
+        if (updatedUser.getEmail() != null){
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getPassword() != null){
+            existingUser.setPassword(updatedUser.getPassword());
+        }
         return userRepository.save(existingUser);
     }
 
