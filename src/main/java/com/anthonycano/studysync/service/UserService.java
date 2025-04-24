@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import com.anthonycano.studysync.repository.UserRepository;
 import com.anthonycano.studysync.model.User;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -31,4 +32,16 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id"));
     }
+
+    public User updateUser(Long id, User updatedUser){
+
+        // We will have the same user ID to save resources, but we will save the new data.
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id"));
+        existingUser.setName(updatedUser.getName());
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setPassword(updatedUser.getPassword());
+        return userRepository.save(existingUser);
+    }
+
+
 }
